@@ -1,4 +1,4 @@
-package com.rubenshardt.yelpgettycenter.modules
+package com.rubenshardt.yelpgettycenter.modules.businessdetails
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -11,6 +11,5 @@ class BusinessDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_business_details)
         setSupportActionBar(toolbar)
-
     }
 }
