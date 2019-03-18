@@ -1,13 +1,9 @@
 package com.rubenshardt.yelpgettycenter.utils.repositories
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.rubenshardt.yelpgettycenter.YelpApplication
-import com.rubenshardt.yelpgettycenter.model.business.Business
-import com.rubenshardt.yelpgettycenter.model.reviews.Review
 import com.rubenshardt.yelpgettycenter.utils.constants.ApiConstants
 import com.rubenshardt.yelpgettycenter.utils.datasources.YelpDataSource
-import com.rubenshardt.yelpgettycenter.utils.helpers.SingleLiveEvent
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
@@ -18,23 +14,13 @@ object YelpRepository: YelpRepositoryInterface {
     private val businessDao = database.businessDao()
     private val reviewsDao = database.reviewsDao()
 
+    override val businessLiveData = businessDao.getBusiness(ApiConstants.BUSINESS_ID)
+    override val reviewsLiveData = reviewsDao.getReviews()
+
     override val loadingBusinessLiveData = MutableLiveData<Boolean>()
     override val loadingReviewsLiveData = MutableLiveData<Boolean>()
 
-    override val businessErrorLiveData = SingleLiveEvent<Throwable>()
-    override val reviewsErrorLiveData = SingleLiveEvent<Throwable>()
-
-    override fun getBusiness(): LiveData<Business> {
-        refreshBusiness()
-        return businessDao.getBusiness(ApiConstants.BUSINESS_ID)
-    }
-
-    override fun getReviews(): LiveData<List<Review>> {
-        refreshReviews()
-        return reviewsDao.getReviews()
-    }
-
-    private fun refreshBusiness() {
+    override fun refreshBusiness(onError: ((Throwable) -> (Unit))?) {
         loadingBusinessLiveData.postValue(true)
         disposables.add(
             YelpDataSource.fetchBusinessDetails()
@@ -43,13 +29,13 @@ object YelpRepository: YelpRepositoryInterface {
                     businessDao.insertBusiness(business)
                     loadingBusinessLiveData.postValue(false)
                 }, {
-                    businessErrorLiveData.postValue(it)
+                    onError?.invoke(it)
                     loadingBusinessLiveData.postValue(false)
                 })
         )
     }
 
-    private fun refreshReviews() {
+    override fun refreshReviews(onError: ((Throwable) -> (Unit))?) {
         loadingReviewsLiveData.postValue(true)
         disposables.add(
             YelpDataSource.fetchBusinessReviews()
@@ -58,14 +44,9 @@ object YelpRepository: YelpRepositoryInterface {
                     loadingReviewsLiveData.postValue(false)
                     reviewsDao.insertReviews(reviews.reviews)
                 }, {
-                    reviewsErrorLiveData.postValue(it)
+                    onError?.invoke(it)
                     loadingReviewsLiveData.postValue(false)
                 })
         )
-    }
-
-    override fun refresh() {
-        refreshBusiness()
-        refreshReviews()
     }
 }

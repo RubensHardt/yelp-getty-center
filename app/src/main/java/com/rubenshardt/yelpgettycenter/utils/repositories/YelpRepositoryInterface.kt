@@ -7,12 +7,11 @@ import com.rubenshardt.yelpgettycenter.utils.helpers.SingleLiveEvent
 
 interface YelpRepositoryInterface {
 
+    val businessLiveData: LiveData<Business>
+    val reviewsLiveData: LiveData<List<Review>>
     val loadingBusinessLiveData: LiveData<Boolean>
     val loadingReviewsLiveData: LiveData<Boolean>
-    val businessErrorLiveData: SingleLiveEvent<Throwable>
-    val reviewsErrorLiveData: SingleLiveEvent<Throwable>
 
-    fun getBusiness(): LiveData<Business>
-    fun getReviews(): LiveData<List<Review>>
-    fun refresh()
+    fun refreshBusiness(onError: ((Throwable) -> (Unit))?)
+    fun refreshReviews(onError: ((Throwable) -> (Unit))?)
 }
