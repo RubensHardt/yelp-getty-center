@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_margin="24dp"
+        android:orientation="vertical">
+
+    <ProgressBar
+            android:id="@+id/loadingProgressBar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            style="@style/ProgressBar"/>
+
+    <TextView
+            android:id="@+id/loadingMessageTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="32dp"
+            android:lineSpacingExtra="8dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            tools:text="Fetching The Getty Center details"
+            tools:ignore="MissingPrefix"/>
+
+</LinearLayout>
