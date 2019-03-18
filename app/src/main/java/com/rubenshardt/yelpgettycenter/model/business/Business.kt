@@ -80,4 +80,9 @@ class Business {
     @SerializedName("hours")
     @TypeConverters(BusinessHoursConverter::class)
     var hours = listOf<BusinessHours>()
+
+    @Expose
+    @SerializedName("messaging")
+    @Embedded(prefix = "messaging_")
+    var messaging: Messaging? = null
 }
