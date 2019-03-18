@@ -15,7 +15,7 @@ object YelpRepository: YelpRepositoryInterface {
     private val reviewsDao = database.reviewsDao()
 
     override val businessLiveData = businessDao.getBusiness(ApiConstants.BUSINESS_ID)
-    override val reviewsLiveData = reviewsDao.getReviews()
+    override val reviewsLiveData = reviewsDao.getReviews(ApiConstants.BUSINESS_ID)
 
     override val loadingBusinessLiveData = MutableLiveData<Boolean>()
     override val loadingReviewsLiveData = MutableLiveData<Boolean>()
@@ -42,6 +42,9 @@ object YelpRepository: YelpRepositoryInterface {
                 .subscribeOn(Schedulers.io())
                 .subscribe ({ reviews ->
                     loadingReviewsLiveData.postValue(false)
+                    reviews.reviews.forEach {
+                        it.businessId = ApiConstants.BUSINESS_ID
+                    }
                     reviewsDao.insertReviews(reviews.reviews)
                 }, {
                     onError?.invoke(it)

@@ -12,7 +12,7 @@ import com.rubenshardt.yelpgettycenter.database.daos.ReviewsDao
 import com.rubenshardt.yelpgettycenter.model.business.Business
 import com.rubenshardt.yelpgettycenter.model.reviews.Review
 
-@Database(entities = [Business::class, Review::class], version = 1)
+@Database(entities = [Business::class, Review::class], version = 1, exportSchema = false)
 @TypeConverters(CategoryConverters::class, OpenHoursConverters::class, StringListConverter::class, BusinessHoursConverter::class)
 abstract class YelpDatabase: RoomDatabase() {
 

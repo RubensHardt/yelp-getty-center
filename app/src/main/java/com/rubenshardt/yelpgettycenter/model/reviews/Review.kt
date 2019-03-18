@@ -7,13 +7,20 @@ import android.arch.persistence.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "reviews")
+@Entity(
+    tableName = "reviews"
+)
 class Review {
 
     @PrimaryKey
     @Expose
     @SerializedName("id")
     var id: String = ""
+
+    @Expose
+    @SerializedName("business_id")
+    @ColumnInfo(name = "business_id")
+    var businessId: String = ""
 
     @Expose
     @SerializedName("url")

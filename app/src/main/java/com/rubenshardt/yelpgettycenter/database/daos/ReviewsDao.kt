@@ -10,8 +10,8 @@ import com.rubenshardt.yelpgettycenter.model.reviews.Review
 @Dao
 interface ReviewsDao {
 
-    @Query("SELECT * FROM reviews")
-    fun getReviews(): LiveData<List<Review>>
+    @Query("SELECT * FROM reviews where business_id =:businessId")
+    fun getReviews(businessId: String): LiveData<List<Review>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertReviews(reviews: List<Review>)
