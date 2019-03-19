@@ -31,4 +31,11 @@
         <item name="android:progressTint">#b71c1c</item>
     </style>
 
+    <style name="ViewSpacer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/spacer_height</item>
+        <item name="android:background">@color/light_gray</item>
+        <item name="android:layout_marginTop">@dimen/margin_regular</item>
+    </style>
+
 </resources>
