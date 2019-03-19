@@ -1,6 +1,7 @@
 package com.rubenshardt.yelpgettycenter.modules.base
 
 import android.support.v7.app.AppCompatActivity
+import com.rubenshardt.yelpgettycenter.R
 import com.rubenshardt.yelpgettycenter.utils.dialogs.LoadingDialog
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -14,5 +15,9 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun dismissLoadingDialog() {
         loadingDialog?.dismiss()
+    }
+
+    protected fun animateFadeInFadeOut() {
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
     }
 }

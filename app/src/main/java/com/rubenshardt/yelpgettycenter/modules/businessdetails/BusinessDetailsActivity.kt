@@ -101,6 +101,11 @@ class BusinessDetailsActivity : BaseActivity(), BusinessInfoListener, PhotosList
         })
 
         viewModel.photoUrlLiveEvent.observe(this, Observer { url ->
+            val intent = Intent(this, WebViewActivity::class.java).apply {
+                putExtra(URL, url)
+                putExtra(TITLE, getString(R.string.photo))
+            }
+            startActivity(intent)
         })
     }
 
