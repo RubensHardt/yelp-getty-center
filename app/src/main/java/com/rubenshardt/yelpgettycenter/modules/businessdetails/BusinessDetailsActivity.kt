@@ -83,6 +83,8 @@ class BusinessDetailsActivity : BaseActivity(), BusinessInfoListener, PhotosList
         })
 
         viewModel.hoursOfOperationLiveEvent.observe(this, Observer {
+            val intent = Intent(this, HoursOfOperationActivity::class.java)
+            startActivity(intent)
         })
 
         viewModel.phoneNumberLiveEvent.observe(this, Observer { phoneNumber ->

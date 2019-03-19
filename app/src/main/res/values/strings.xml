@@ -15,6 +15,16 @@
     <string name="photo">Photo</string>
     <string name="closed">Closed</string>
 
+    <string-array name="week_days">
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+    </string-array>
+
     <plurals name="years">
         <item quantity="one">%d year</item>
         <item quantity="other">%d years</item>

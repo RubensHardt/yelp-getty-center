@@ -35,6 +35,11 @@
                 android:name=".modules.webview.WebViewActivity"
                 android:parentActivityName=".modules.businessdetails.BusinessDetailsActivity"/>
 
+        <activity
+                android:name=".modules.hoursofoperation.HoursOfOperationActivity"
+                android:parentActivityName=".modules.businessdetails.BusinessDetailsActivity"
+                android:label="@string/hours_of_operation"/>
+
         <meta-data
                 android:name="com.google.android.gms.version"
                 android:value="@integer/google_play_services_version"/>
