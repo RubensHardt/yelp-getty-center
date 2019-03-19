@@ -13,6 +13,7 @@
     <string name="time_ago">%1$s ago</string>
     <string name="now">now</string>
     <string name="photo">Photo</string>
+    <string name="closed">Closed</string>
 
     <plurals name="years">
         <item quantity="one">%d year</item>
