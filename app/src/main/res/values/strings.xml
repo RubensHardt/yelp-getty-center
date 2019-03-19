@@ -9,4 +9,27 @@
     <string name="photo_description">Business photo</string>
     <string name="photos">Photos</string>
     <string name="api_error">Error loading the business information</string>
+    <string name="recommended_reviews">Recommended Reviews</string>
+    <string name="time_ago">%1$s ago</string>
+    <string name="now">now</string>
+
+    <plurals name="years">
+        <item quantity="one">%d year</item>
+        <item quantity="other">%d years</item>
+    </plurals>
+
+    <plurals name="months">
+        <item quantity="one">%d month</item>
+        <item quantity="other">%d months</item>
+    </plurals>
+
+    <plurals name="days">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+
+    <plurals name="hours">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
 </resources>
