@@ -53,6 +53,7 @@ class BusinessDetailsActivity : BaseActivity() {
         viewModel.businessLiveData.observe(this, Observer { business ->
             business?.let {
                 //TODO: update adapter
+                businessCoverImageView.loadCroppedImage(it.imageUrl)
             }
         })
 
