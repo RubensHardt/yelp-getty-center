@@ -6,5 +6,7 @@
     <string name="call_business">Call %1$s</string>
     <string name="hours_of_operation">Hours of Operation</string>
     <string name="visit_website">Visit Website</string>
+    <string name="photo_description">Business photo</string>
+    <string name="photos">Photos</string>
     <string name="api_error">Error loading the business information</string>
 </resources>
