@@ -17,6 +17,14 @@ abstract class BaseActivity : AppCompatActivity() {
         loadingDialog?.dismiss()
     }
 
+    protected fun animateRightToLeft() {
+        overridePendingTransition(R.anim.in_right_to_left, R.anim.out_right_to_left)
+    }
+
+    protected fun animateLeftToRight() {
+        overridePendingTransition(R.anim.in_left_to_right, R.anim.out_left_to_right)
+    }
+
     protected fun animateFadeInFadeOut() {
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
     }
