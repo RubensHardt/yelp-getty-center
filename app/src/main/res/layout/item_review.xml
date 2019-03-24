@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_regular"
+        android:layout_marginEnd="@dimen/margin_regular">
+
+    <ImageView
+            android:id="@+id/profileImageView"
+            android:layout_width="@dimen/profile_image_size"
+            android:layout_height="@dimen/profile_image_size"/>
+
+    <TextView
+            android:id="@+id/nameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_toEndOf="@id/profileImageView"
+            android:ellipsize="end"
+            android:textSize="@dimen/text_regular"
+            android:textColor="@color/black"
+            tools:text="Emily L."/>
+
+    <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_below="@id/profileImageView"
+            style="?android:attr/ratingBarStyleSmall"
+            android:numStars="5"
+            android:stepSize="0.5"
+            android:isIndicator="true"/>
+
+    <TextView
+            android:id="@+id/timeCreatedTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/ratingBar"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_alignBottom="@id/ratingBar"
+            android:ellipsize="end"
+            android:textSize="@dimen/text_small"
+            android:textColor="@color/dim_gray"
+            tools:text="7 days ago"/>
+
+    <TextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_below="@id/ratingBar"
+            android:maxLines="5"
+            android:ellipsize="end"
+            android:textSize="@dimen/text_small"
+            android:textColor="@color/black"
+            tools:text="Description."/>
+
+    <View style="@style/ViewSpacer"
+          android:layout_below="@id/descriptionTextView"
+          android:layout_marginBottom="@dimen/margin_regular"/>
+
+</RelativeLayout>
