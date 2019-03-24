@@ -9,7 +9,6 @@ import com.rubenshardt.yelpgettycenter.utils.helpers.SingleLiveEvent
 interface BusinessDetailsInterface {
 
     val businessLiveData: LiveData<Business>
-    val reviewsLiveData: LiveData<List<Review>>
     val refreshingLiveData: LiveData<Boolean>
     val loadingLiveData: LiveData<Boolean>
     val errorLiveEvent: SingleLiveEvent<String>
