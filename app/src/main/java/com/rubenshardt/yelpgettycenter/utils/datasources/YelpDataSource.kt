@@ -9,7 +9,6 @@ import io.reactivex.Single
 
 object YelpDataSource: YelpDataSourceInterface {
 
-    // TODO: Check the possible synchronism issue
     private val client = RetrofitHelper.getRetrofit().create(YelpClient::class.java)
 
     override fun fetchBusinessDetails(): Single<Business> {

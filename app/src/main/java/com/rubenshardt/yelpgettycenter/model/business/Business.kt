@@ -5,7 +5,9 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.rubenshardt.yelpgettycenter.database.converters.BusinessHoursConverter
 import com.rubenshardt.yelpgettycenter.database.converters.CategoryConverters
+import com.rubenshardt.yelpgettycenter.database.converters.ReviewConverter
 import com.rubenshardt.yelpgettycenter.database.converters.StringListConverter
+import com.rubenshardt.yelpgettycenter.model.reviews.Review
 
 @Entity(tableName = "business")
 class Business {
@@ -85,4 +87,7 @@ class Business {
     @SerializedName("messaging")
     @Embedded(prefix = "messaging_")
     var messaging: Messaging? = null
+
+    @TypeConverters(ReviewConverter::class)
+    var topReviews = listOf<Review>()
 }

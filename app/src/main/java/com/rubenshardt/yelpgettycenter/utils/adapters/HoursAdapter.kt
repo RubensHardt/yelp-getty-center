@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.rubenshardt.yelpgettycenter.model.business.BusinessHours
 import com.rubenshardt.yelpgettycenter.model.business.OpenHours
+import com.rubenshardt.yelpgettycenter.utils.helpers.DateHelper
 import com.rubenshardt.yelpgettycenter.utils.pokos.DailySchedule
 import com.rubenshardt.yelpgettycenter.utils.viewholders.HoursViewHolder
 
@@ -14,7 +15,7 @@ class HoursAdapter(daysOfWeek: Array<String>): RecyclerView.Adapter<HoursViewHol
             field = value
             dailySchedule.forEachIndexed { index, dailySchedule ->
                 dailySchedule.hoursOfOperation = openHoursList.firstOrNull { it.day == index }?.let {
-                    "${it.start} - ${it.end}"
+                    "${DateHelper.getUserFriendlyTime(it.start)} - ${DateHelper.getUserFriendlyTime(it.end)}"
                 }
             }
             notifyDataSetChanged()
