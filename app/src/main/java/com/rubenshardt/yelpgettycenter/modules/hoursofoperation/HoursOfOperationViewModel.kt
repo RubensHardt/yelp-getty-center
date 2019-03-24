@@ -5,5 +5,5 @@ import com.rubenshardt.yelpgettycenter.utils.repositories.YelpRepository
 
 class HoursOfOperationViewModel : ViewModel(), HoursOfOperationInterface {
 
-    override var businessLiveData = YelpRepository.businessLiveData
+    override var businessLiveData = YelpRepository.getBusiness()
 }

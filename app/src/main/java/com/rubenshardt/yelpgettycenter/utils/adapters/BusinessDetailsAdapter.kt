@@ -3,7 +3,6 @@ package com.rubenshardt.yelpgettycenter.utils.adapters
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.rubenshardt.yelpgettycenter.model.business.Business
-import com.rubenshardt.yelpgettycenter.model.reviews.Review
 import com.rubenshardt.yelpgettycenter.utils.listeners.BusinessInfoListener
 import com.rubenshardt.yelpgettycenter.utils.listeners.MapListener
 import com.rubenshardt.yelpgettycenter.utils.listeners.PhotosListener
@@ -25,13 +24,19 @@ class BusinessDetailsAdapter(
     var business: Business? = null
         set(value) {
             field = value
-            updateItems(newBusiness = value)
-        }
-
-    var reviews: List<Review> = listOf()
-        set(value) {
-            field = value
-            updateItems(newReviews = value)
+            business?.let {
+                items = mutableListOf(
+                    BusinessDetailsItems.Header(it),
+                    BusinessDetailsItems.Map(it.location, it.coordinates),
+                    BusinessDetailsItems.ContactInfo(it),
+                    BusinessDetailsItems.Photos(it.photos),
+                    BusinessDetailsItems.ReviewsHeader()
+                )
+                items.addAll(
+                    it.topReviews.map { review -> BusinessDetailsItems.BusinessReview(review) }
+                )
+                notifyDataSetChanged()
+            }
         }
 
     private var items = mutableListOf<BusinessDetailsItems>()
@@ -73,25 +78,4 @@ class BusinessDetailsAdapter(
     override fun getItemViewType(position: Int): Int {
         return items[position].viewType
     }
-
-    private fun updateItems(newBusiness: Business? = null, newReviews: List<Review>? = null) {
-        val business = newBusiness ?: this.business
-        val reviews = newReviews ?: this.reviews
-        business?.let {
-            items = mutableListOf(
-                BusinessDetailsItems.Header(it),
-                BusinessDetailsItems.Map(it.location, it.coordinates),
-                BusinessDetailsItems.ContactInfo(it),
-                BusinessDetailsItems.Photos(it.photos),
-                BusinessDetailsItems.ReviewsHeader()
-            )
-            items.addAll(
-                reviews.map { review ->
-                    BusinessDetailsItems.BusinessReview(review)
-                }
-            )
-            notifyDataSetChanged()
-        }
-    }
-
 }

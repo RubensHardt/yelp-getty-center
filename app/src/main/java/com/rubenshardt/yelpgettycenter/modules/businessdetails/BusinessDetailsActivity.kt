@@ -33,7 +33,6 @@ class BusinessDetailsActivity : BaseActivity(), BusinessInfoListener, PhotosList
         viewModel = getViewModel<BusinessDetailsViewModel>()
         setupView()
         setupObservers()
-        viewModel.refreshBusinessDetails()
     }
 
     private fun setupView() {
@@ -67,11 +66,8 @@ class BusinessDetailsActivity : BaseActivity(), BusinessInfoListener, PhotosList
             business?.let {
                 businessCoverImageView.loadCroppedImage(it.imageUrl)
                 adapter.business = it
+                dismissLoadingDialog()
             }
-        })
-
-        viewModel.reviewsLiveData.observe(this, Observer { reviews ->
-            reviews?.let { adapter.reviews = it }
         })
 
         viewModel.coordinatesLiveEvent.observe(this, Observer { coordinates ->

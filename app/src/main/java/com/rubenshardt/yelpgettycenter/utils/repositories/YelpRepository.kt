@@ -1,54 +1,45 @@
 package com.rubenshardt.yelpgettycenter.utils.repositories
 
-import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.LiveData
 import com.rubenshardt.yelpgettycenter.YelpApplication
+import com.rubenshardt.yelpgettycenter.model.business.Business
+import com.rubenshardt.yelpgettycenter.model.reviews.Reviews
 import com.rubenshardt.yelpgettycenter.utils.constants.ApiConstants
 import com.rubenshardt.yelpgettycenter.utils.datasources.YelpDataSource
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 
-object YelpRepository: YelpRepositoryInterface {
+object YelpRepository : YelpRepositoryInterface {
 
     private var disposables = CompositeDisposable()
     private val database = YelpApplication.database
     private val businessDao = database.businessDao()
-    private val reviewsDao = database.reviewsDao()
 
-    override val businessLiveData = businessDao.getBusiness(ApiConstants.BUSINESS_ID)
-    override val reviewsLiveData = reviewsDao.getReviews(ApiConstants.BUSINESS_ID)
+    override fun getBusiness(onSuccess: (() -> Unit)?, onError: ((Throwable) -> (Unit))?): LiveData<Business> {
+        refreshBusiness(onSuccess, onError)
+        return businessDao.getBusiness(ApiConstants.BUSINESS_ID)
+    }
 
-    override val loadingBusinessLiveData = MutableLiveData<Boolean>()
-    override val loadingReviewsLiveData = MutableLiveData<Boolean>()
-
-    override fun refreshBusiness(onError: ((Throwable) -> (Unit))?) {
-        loadingBusinessLiveData.postValue(true)
+    override fun refreshBusiness(onSuccess: (() -> Unit)?, onError: ((Throwable) -> (Unit))?) {
+        val businessObservable = YelpDataSource.fetchBusinessDetails()
+        val reviewsObservable = YelpDataSource.fetchBusinessReviews()
         disposables.add(
-            YelpDataSource.fetchBusinessDetails()
+            Single.zip(
+                businessObservable,
+                reviewsObservable,
+                BiFunction<Business, Reviews, Business> { business, reviews ->
+                    business.topReviews = reviews.reviews
+                    business
+                }
+            )
                 .subscribeOn(Schedulers.io())
                 .subscribe({ business ->
                     businessDao.insertBusiness(business)
-                    loadingBusinessLiveData.postValue(false)
+                    onSuccess?.invoke()
                 }, {
                     onError?.invoke(it)
-                    loadingBusinessLiveData.postValue(false)
-                })
-        )
-    }
-
-    override fun refreshReviews(onError: ((Throwable) -> (Unit))?) {
-        loadingReviewsLiveData.postValue(true)
-        disposables.add(
-            YelpDataSource.fetchBusinessReviews()
-                .subscribeOn(Schedulers.io())
-                .subscribe ({ reviews ->
-                    loadingReviewsLiveData.postValue(false)
-                    reviews.reviews.forEach {
-                        it.businessId = ApiConstants.BUSINESS_ID
-                    }
-                    reviewsDao.insertReviews(reviews.reviews)
-                }, {
-                    onError?.invoke(it)
-                    loadingReviewsLiveData.postValue(false)
                 })
         )
     }
