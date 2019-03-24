@@ -63,8 +63,8 @@ class BusinessDetailsViewModel(
     }
 
     private fun onError(error: Throwable) {
+        errorLiveEvent.postValue(error.localizedMessage)
         refreshingLiveData.postValue(false)
         loadingLiveData.postValue(false)
-        errorLiveEvent.postValue(error.localizedMessage)
     }
 }

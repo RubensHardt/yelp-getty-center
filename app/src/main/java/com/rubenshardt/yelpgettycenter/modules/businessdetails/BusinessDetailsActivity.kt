@@ -64,9 +64,9 @@ class BusinessDetailsActivity : BaseActivity(), BusinessInfoListener, PhotosList
 
         viewModel.businessLiveData.observe(this, Observer { business ->
             business?.let {
-                dismissLoadingDialog()
                 businessCoverImageView.loadCroppedImage(it.imageUrl)
                 adapter.business = it
+                dismissLoadingDialog()
             }
         })
 
