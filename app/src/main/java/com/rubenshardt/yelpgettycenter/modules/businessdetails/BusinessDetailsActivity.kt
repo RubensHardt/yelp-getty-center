@@ -1,18 +1,30 @@
 package com.rubenshardt.yelpgettycenter.modules.businessdetails
 
 import android.arch.lifecycle.Observer
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.util.Log
 import com.rubenshardt.yelpgettycenter.R
+import com.rubenshardt.yelpgettycenter.model.business.Coordinates
 import com.rubenshardt.yelpgettycenter.modules.base.BaseActivity
+import com.rubenshardt.yelpgettycenter.modules.hoursofoperation.HoursOfOperationActivity
+import com.rubenshardt.yelpgettycenter.modules.webview.WebViewActivity
+import com.rubenshardt.yelpgettycenter.utils.adapters.BusinessDetailsAdapter
+import com.rubenshardt.yelpgettycenter.utils.constants.IntentConstants.TITLE
+import com.rubenshardt.yelpgettycenter.utils.constants.IntentConstants.URL
 import com.rubenshardt.yelpgettycenter.utils.extensions.getViewModel
 import com.rubenshardt.yelpgettycenter.utils.extensions.loadCroppedImage
+import com.rubenshardt.yelpgettycenter.utils.listeners.BusinessInfoListener
+import com.rubenshardt.yelpgettycenter.utils.listeners.MapListener
+import com.rubenshardt.yelpgettycenter.utils.listeners.PhotosListener
 import kotlinx.android.synthetic.main.activity_business_details.*
 
-class BusinessDetailsActivity : BaseActivity() {
+class BusinessDetailsActivity : BaseActivity(), BusinessInfoListener, PhotosListener, MapListener {
 
     private lateinit var viewModel: BusinessDetailsInterface
+    private val adapter = BusinessDetailsAdapter(this, this, this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,10 +33,10 @@ class BusinessDetailsActivity : BaseActivity() {
         viewModel = getViewModel<BusinessDetailsViewModel>()
         setupView()
         setupObservers()
-        viewModel.refreshBusinessDetails()
     }
 
     private fun setupView() {
+        contentRecyclerView.adapter = adapter
         swipeRefreshLayout.setOnRefreshListener {
             viewModel.refreshBusinessDetails()
         }
@@ -52,13 +64,78 @@ class BusinessDetailsActivity : BaseActivity() {
 
         viewModel.businessLiveData.observe(this, Observer { business ->
             business?.let {
-                //TODO: update adapter
                 businessCoverImageView.loadCroppedImage(it.imageUrl)
+                adapter.business = it
+                dismissLoadingDialog()
             }
         })
 
-        viewModel.reviewsLiveData.observe(this, Observer { reviews ->
-            //TODO: update adapter
+        viewModel.coordinatesLiveEvent.observe(this, Observer { coordinates ->
+            val latitude = coordinates?.latitude
+            val longitude = coordinates?.longitude
+            val uri = "geo:$latitude,$longitude"
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+            startActivity(intent)
+        })
+
+        viewModel.hoursOfOperationLiveEvent.observe(this, Observer {
+            val intent = Intent(this, HoursOfOperationActivity::class.java)
+            startActivity(intent)
+        })
+
+        viewModel.phoneNumberLiveEvent.observe(this, Observer { phoneNumber ->
+            val intent = Intent(Intent.ACTION_DIAL).apply {
+                data = Uri.parse("tel:$phoneNumber")
+            }
+            startActivity(intent)
+        })
+
+
+        viewModel.externalUrlLiveEvent.observe(this, Observer { url ->
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(url)
+            }
+            startActivity(intent)
+        })
+
+        viewModel.photoUrlLiveEvent.observe(this, Observer { url ->
+            val intent = Intent(this, WebViewActivity::class.java).apply {
+                putExtra(URL, url)
+                putExtra(TITLE, getString(R.string.photo))
+            }
+            startActivity(intent)
         })
     }
+
+    // region MapListener
+
+    override fun onMapClicked(coordinates: Coordinates) {
+        viewModel.onMapClicked(coordinates)
+    }
+
+    // endregion
+
+    // region BusinessInfoListener
+
+    override fun onHoursOfOperationClicked() {
+        viewModel.onHoursOfOperationClicked()
+    }
+
+    override fun onCallClicked(phoneNumber: String) {
+        viewModel.onCallClicked(phoneNumber)
+    }
+
+    override fun onVisitWebsiteClicked(url: String) {
+        viewModel.onVisitWebsiteClicked(url)
+    }
+
+    // endregion
+
+    // region PhotosListener
+
+    override fun onPhotoClicked(url: String) {
+        viewModel.onPhotoClicked(url)
+    }
+
+    // endregion
 }
