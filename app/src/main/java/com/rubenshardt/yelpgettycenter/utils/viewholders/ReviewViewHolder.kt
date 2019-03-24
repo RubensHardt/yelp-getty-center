@@ -18,10 +18,7 @@ class ReviewViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(parent.infla
                 profileImageView.loadRoundedCroppedImage(value?.user?.imageUrl)
                 nameTextView.text = value?.user?.name
                 ratingBar.rating = value?.rating ?: 0F
-                timeCreatedTextView.text = value?.timeCreated?.let {
-                    val elapsedTime = DateHelper.getElapsedTime(context, it)
-                    context.getString(R.string.time_ago, elapsedTime)
-                }
+                timeCreatedTextView.text = value?.timeCreated?.let { DateHelper.getElapsedTime(context, it) }
                 descriptionTextView.text = value?.text
             }
         }
