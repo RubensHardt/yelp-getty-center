@@ -25,7 +25,11 @@ class BusinessDetailsViewModel(
 
     init {
         loadingLiveData.postValue(true)
-        businessLiveData = yelpRepository.getBusiness(onError = ::onError)
+        businessLiveData = yelpRepository.getBusiness(
+            onSuccess = {
+                loadingLiveData.postValue(false)
+            },
+            onError = ::onError)
     }
 
     override fun refreshBusinessDetails() {
